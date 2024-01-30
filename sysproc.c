@@ -89,3 +89,22 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_clone(void)
+{
+  int work, arg1, arg2, stack;
+  if(argint(0, &work)<0 || argint(1, &arg1)<0 || argint(2, &arg2)<0 || argint(3, &stack)<0)
+    return -1;
+  return clone((void *)work, (void *)arg1, (void *)arg2, (void *)stack);
+}
+
+int
+sys_join(void)
+{
+  void **stack;
+  int s2;
+  s2 = argint(0, &s2);
+  stack = (void**) s2;
+  return join(stack);
+}
